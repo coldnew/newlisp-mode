@@ -110,16 +110,6 @@
 (put 'lambda-macro 'scheme-indent-function 1) ;; CONTRIB: Jeff Ober
 
 ;; ===========================================================================================
-(defface newlisp-font-lock-user-keywords-face
-  '((((class color) (background light)) (:foreground "red4"))
-    (((class color) (background dark)) (:foreground "dark slate gray")) ;; NEM was yellow3
-    (((class grayscale) (background light)) (:foreground "dimgray" :italic t))
-    (((class grayscale) (background dark)) (:foreground "lightgray" :italic t))
-    (t (:bold t)))
-  "Font lock mode face used to highlight user-defined keywords for newlisp mode."
-  :group 'font-lock-faces)
-(defvar newlisp-font-lock-user-keywords-face 'newlisp-font-lock-user-keywords-face)
-;; ===========================================================================================
 (defface newlisp-font-lock-quote-face
   '((((class color) (background light)) (:foreground "purple"))
 		;; 2008-03-12 Jeff Ober: changed to plum from magenta. I *hate* magenta.
@@ -537,9 +527,9 @@ Then, put cursor in other window."
      (,(concat "\\<\\(" newlisp-keywords-regexp "\\)\\>")  ;; builtin keywords + word boundaries
       0 font-lock-keyword-face)  ;; removed 't as last argument
      (,(concat "\\<\\(" newlisp-user-keywords-regexp "\\)\\>")  ;; user keywords
-      0 newlisp-font-lock-user-keywords-face)
+      0 font-lock-keyword-face)
      (,(concat ":\\(" newlisp-user-keywords-regexp "\\)\\>")  ;; user keywords with ':' prefix
-      0 newlisp-font-lock-user-keywords-face)
+      0 font-lock-keyword-face)
      (,(concat "\\<\\(" newlisp-function-names-regexp "\\)\\>")  ;; function keywords + word boundaries
       0 font-lock-function-name-face t)
      ;; Multi-line string highlighting. HINT: use ctrl-c f to refontify
