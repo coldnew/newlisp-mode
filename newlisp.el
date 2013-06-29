@@ -108,23 +108,7 @@
 (put 'letex 'scheme-indent-function 1)
 (put 'local 'scheme-indent-function 1) ;; CONTRIB: Jeff Ober
 (put 'lambda-macro 'scheme-indent-function 1) ;; CONTRIB: Jeff Ober
-;; ===========================================================================================
-;;  Create some faces for special fontification.
-;;  NOTE: XEmacs seems to ignore the (background light) form.
-;;  IOWS: You may need to use customize to set a readable color if using light background
-;; ===========================================================================================
-(defface newlisp-font-lock-keywords-face
-  '((((class color) (background light)) (:foreground "green4"))
-; Uncomment this and delete the following line to reduce visual color-coding
-; clutter - NEM
-;    (((class color) (background dark)) (:foreground "green")) ;; uncomment this
-    (((class color) (background dark)) (:foreground "cyan")) ;; delete this
-    (((class grayscale) (background light)) (:foreground "dimgray" :italic t))
-    (((class grayscale) (background dark)) (:foreground "lightgray" :italic t))
-    (t (:bold t)))
-  "Font lock mode face used to highlight a syntax group for newlisp mode."
-  :group 'font-lock-faces)
-(defvar newlisp-font-lock-keywords-face 'newlisp-font-lock-keywords-face)
+
 ;; ===========================================================================================
 (defface newlisp-font-lock-function-names-face
   '((((class color) (background light)) (:foreground "darkcyan"))
@@ -561,7 +545,7 @@ Then, put cursor in other window."
    `(,@scheme-font-lock-keywords  ;; note: backquote and splice operator!
      ;; add new keywords for highlighting in our sample face
      (,(concat "\\<\\(" newlisp-keywords-regexp "\\)\\>")  ;; builtin keywords + word boundaries
-      0 newlisp-font-lock-keywords-face)  ;; removed 't as last argument
+      0 font-lock-keyword-face)  ;; removed 't as last argument
      (,(concat "\\<\\(" newlisp-user-keywords-regexp "\\)\\>")  ;; user keywords
       0 newlisp-font-lock-user-keywords-face)
      (,(concat ":\\(" newlisp-user-keywords-regexp "\\)\\>")  ;; user keywords with ':' prefix
