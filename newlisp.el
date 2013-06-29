@@ -109,17 +109,6 @@
 (put 'local 'scheme-indent-function 1) ;; CONTRIB: Jeff Ober
 (put 'lambda-macro 'scheme-indent-function 1) ;; CONTRIB: Jeff Ober
 
-;; ===========================================================================================
-(defface newlisp-font-lock-quote-face
-  '((((class color) (background light)) (:foreground "purple"))
-		;; 2008-03-12 Jeff Ober: changed to plum from magenta. I *hate* magenta.
-    (((class color) (background dark)) (:foreground "plum"))
-    (((class grayscale) (background light)) (:foreground "dimgray" :italic t))
-    (((class grayscale) (background dark)) (:foreground "lightgray" :italic t))
-    (t (:bold t)))
-  "Font lock mode face used to highlight quoted symbols in newlisp mode."
-  :group 'font-lock-faces)
-(defvar newlisp-font-lock-quote-face 'newlisp-font-lock-quote-face)
 ;; ==========================================================================
 (defconst
   newlisp-function-names-regexp
@@ -538,9 +527,8 @@ Then, put cursor in other window."
      ;("[^#]\\({[^{}]*}\\)" 0 'font-lock-string-face) ;; braces, {}
      ("[^#]\\({[^{}]*}\\)" 0 font-lock-string-face t) ; long string
      ("[^#]\\(\\[text\\][^{}]*\\[/text\\]\\)" 0 'font-lock-string-face t) ;; [text] [/text]
-     ("'[A-Za-z0-9\-_*0-9]*" 0 'newlisp-font-lock-quote-face)
-	 ("\\(^\\|[^\$\\\]\\)#.*" 0 'font-lock-comment-face t) ;; ## comments
-	 ("\\(^\\|[^\$\\\]\\);.*" 0 'font-lock-comment-face t) ;; `;;' comments
+     ("\\(^\\|[^\$\\\]\\)#.*" 0 'font-lock-comment-face t) ;; ## comments
+     ("\\(^\\|[^\$\\\]\\);.*" 0 'font-lock-comment-face t) ;; `;;' comments
      )
    "List of newlisp keywords and faces.")
 ;; ==========================================================================
