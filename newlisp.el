@@ -688,4 +688,6 @@ Then, put cursor in other window."
                         ;; The cons-cell list approach used here is for XEmacs compatibility.
 						(define-key scheme-mode-map [menu-bar scheme] nil)  ;; drop the scheme menu
 						)
+
+(provide 'newlisp)
 ;;; newlisp.el ends here
