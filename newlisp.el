@@ -108,54 +108,7 @@
 (put 'letex 'scheme-indent-function 1)
 (put 'local 'scheme-indent-function 1) ;; CONTRIB: Jeff Ober
 (put 'lambda-macro 'scheme-indent-function 1) ;; CONTRIB: Jeff Ober
-;; ===========================================================================================
-;;  Create some faces for special fontification.
-;;  NOTE: XEmacs seems to ignore the (background light) form.
-;;  IOWS: You may need to use customize to set a readable color if using light background
-;; ===========================================================================================
-(defface newlisp-font-lock-keywords-face
-  '((((class color) (background light)) (:foreground "green4"))
-; Uncomment this and delete the following line to reduce visual color-coding
-; clutter - NEM
-;    (((class color) (background dark)) (:foreground "green")) ;; uncomment this
-    (((class color) (background dark)) (:foreground "cyan")) ;; delete this
-    (((class grayscale) (background light)) (:foreground "dimgray" :italic t))
-    (((class grayscale) (background dark)) (:foreground "lightgray" :italic t))
-    (t (:bold t)))
-  "Font lock mode face used to highlight a syntax group for newlisp mode."
-  :group 'font-lock-faces)
-(defvar newlisp-font-lock-keywords-face 'newlisp-font-lock-keywords-face)
-;; ===========================================================================================
-(defface newlisp-font-lock-function-names-face
-  '((((class color) (background light)) (:foreground "darkcyan"))
-    (((class color) (background dark)) (:foreground "cyan"))
-    (((class grayscale) (background light)) (:foreground "dimgray" :italic t))
-    (((class grayscale) (background dark)) (:foreground "lightgray" :italic t))
-    (t (:bold t)))
-  "Font lock mode face used to highlight functions (defun, define, fn) for newlisp mode."
-  :group 'font-lock-faces)
-(defvar newlisp-font-lock-function-names-face 'newlisp-font-lock-function-names-face)
-;; ===========================================================================================
-(defface newlisp-font-lock-user-keywords-face
-  '((((class color) (background light)) (:foreground "red4"))
-    (((class color) (background dark)) (:foreground "dark slate gray")) ;; NEM was yellow3
-    (((class grayscale) (background light)) (:foreground "dimgray" :italic t))
-    (((class grayscale) (background dark)) (:foreground "lightgray" :italic t))
-    (t (:bold t)))
-  "Font lock mode face used to highlight user-defined keywords for newlisp mode."
-  :group 'font-lock-faces)
-(defvar newlisp-font-lock-user-keywords-face 'newlisp-font-lock-user-keywords-face)
-;; ===========================================================================================
-(defface newlisp-font-lock-quote-face
-  '((((class color) (background light)) (:foreground "purple"))
-		;; 2008-03-12 Jeff Ober: changed to plum from magenta. I *hate* magenta.
-    (((class color) (background dark)) (:foreground "plum"))
-    (((class grayscale) (background light)) (:foreground "dimgray" :italic t))
-    (((class grayscale) (background dark)) (:foreground "lightgray" :italic t))
-    (t (:bold t)))
-  "Font lock mode face used to highlight quoted symbols in newlisp mode."
-  :group 'font-lock-faces)
-(defvar newlisp-font-lock-quote-face 'newlisp-font-lock-quote-face)
+
 ;; ==========================================================================
 (defconst
   newlisp-function-names-regexp
@@ -561,22 +514,21 @@ Then, put cursor in other window."
    `(,@scheme-font-lock-keywords  ;; note: backquote and splice operator!
      ;; add new keywords for highlighting in our sample face
      (,(concat "\\<\\(" newlisp-keywords-regexp "\\)\\>")  ;; builtin keywords + word boundaries
-      0 newlisp-font-lock-keywords-face)  ;; removed 't as last argument
+      0 font-lock-keyword-face)  ;; removed 't as last argument
      (,(concat "\\<\\(" newlisp-user-keywords-regexp "\\)\\>")  ;; user keywords
-      0 newlisp-font-lock-user-keywords-face)
+      0 font-lock-keyword-face)
      (,(concat ":\\(" newlisp-user-keywords-regexp "\\)\\>")  ;; user keywords with ':' prefix
-      0 newlisp-font-lock-user-keywords-face)
+      0 font-lock-keyword-face)
      (,(concat "\\<\\(" newlisp-function-names-regexp "\\)\\>")  ;; function keywords + word boundaries
-      0 newlisp-font-lock-function-names-face t)
+      0 font-lock-function-name-face t)
      ;; Multi-line string highlighting. HINT: use ctrl-c f to refontify
      ;;   NOTE: emacs does not handle multi-line string well in this manner.
      ;;     (JB) suggests looking at how perl and AUCTex handle this.
      ;("[^#]\\({[^{}]*}\\)" 0 'font-lock-string-face) ;; braces, {}
      ("[^#]\\({[^{}]*}\\)" 0 font-lock-string-face t) ; long string
      ("[^#]\\(\\[text\\][^{}]*\\[/text\\]\\)" 0 'font-lock-string-face t) ;; [text] [/text]
-     ("'[A-Za-z0-9\-_*0-9]*" 0 'newlisp-font-lock-quote-face)
-	 ("\\(^\\|[^\$\\\]\\)#.*" 0 'font-lock-comment-face t) ;; ## comments
-	 ("\\(^\\|[^\$\\\]\\);.*" 0 'font-lock-comment-face t) ;; `;;' comments
+     ("\\(^\\|[^\$\\\]\\)#.*" 0 'font-lock-comment-face t) ;; ## comments
+     ("\\(^\\|[^\$\\\]\\);.*" 0 'font-lock-comment-face t) ;; `;;' comments
      )
    "List of newlisp keywords and faces.")
 ;; ==========================================================================
