@@ -51,7 +51,7 @@
 ;;; Related links and files
 ;;    http://www.johnsons-web.com/demo/emacs/derived-mode/dmode.el
 ;;      Mode template to "roll your own programming mode"
-;; 
+;;
 ;; 'Emacs' is meant to refer to *either* GNU Emacs *or* to the Xemacs fork
 ;;
 ;;  About 'help-command': The standard Emacs installation maps control-h to the
@@ -64,8 +64,6 @@
 ;;; Code:
 ;; ===========================================================================================
 (require 'scheme)          ;; Inherit Scheme mode
-(require 'tj-parenface)    ;; Highlight parens and brackets
-;(require 'nl-doc-assoc)    ;; Data structure holding documentation
 ;; ===========================================================================================
 (defvar newlisp-mode-hook nil
   "*Hook called by `newlisp-mode'.")
@@ -88,7 +86,7 @@
   (mapconcat (lambda (x) x) (split-string S "\n") " "))
 ;; ===========================================================================================
 ;; 2008-03-12: Jeff Ober: was missing define-macro, lambda, lambda-macro
-(defvar newlisp-function-names '("define" "define-macro" "fn" "lambda" "lambda-macro") 
+(defvar newlisp-function-names '("define" "define-macro" "fn" "lambda" "lambda-macro")
   "Names of Newlisp function definitions")
 ;; ===========================================================================================
 (defun newlisp-at-function-startp ()
@@ -110,56 +108,9 @@
 (put 'letex 'scheme-indent-function 1)
 (put 'local 'scheme-indent-function 1) ;; CONTRIB: Jeff Ober
 (put 'lambda-macro 'scheme-indent-function 1) ;; CONTRIB: Jeff Ober
-;; ===========================================================================================
-;;  Create some faces for special fontification.
-;;  NOTE: XEmacs seems to ignore the (background light) form.
-;;  IOWS: You may need to use customize to set a readable color if using light background
-;; ===========================================================================================
-(defface newlisp-font-lock-keywords-face
-  '((((class color) (background light)) (:foreground "green4"))
-; Uncomment this and delete the following line to reduce visual color-coding
-; clutter - NEM 
-;    (((class color) (background dark)) (:foreground "green")) ;; uncomment this
-    (((class color) (background dark)) (:foreground "cyan")) ;; delete this
-    (((class grayscale) (background light)) (:foreground "dimgray" :italic t))
-    (((class grayscale) (background dark)) (:foreground "lightgray" :italic t))
-    (t (:bold t)))
-  "Font lock mode face used to highlight a syntax group for newlisp mode."
-  :group 'font-lock-faces)
-(defvar newlisp-font-lock-keywords-face 'newlisp-font-lock-keywords-face)
-;; ===========================================================================================
-(defface newlisp-font-lock-function-names-face
-  '((((class color) (background light)) (:foreground "darkcyan"))
-    (((class color) (background dark)) (:foreground "cyan"))
-    (((class grayscale) (background light)) (:foreground "dimgray" :italic t))
-    (((class grayscale) (background dark)) (:foreground "lightgray" :italic t))
-    (t (:bold t)))
-  "Font lock mode face used to highlight functions (defun, define, fn) for newlisp mode."
-  :group 'font-lock-faces)
-(defvar newlisp-font-lock-function-names-face 'newlisp-font-lock-function-names-face)
-;; ===========================================================================================
-(defface newlisp-font-lock-user-keywords-face
-  '((((class color) (background light)) (:foreground "red4"))
-    (((class color) (background dark)) (:foreground "dark slate gray")) ;; NEM was yellow3
-    (((class grayscale) (background light)) (:foreground "dimgray" :italic t))
-    (((class grayscale) (background dark)) (:foreground "lightgray" :italic t))
-    (t (:bold t)))
-  "Font lock mode face used to highlight user-defined keywords for newlisp mode."
-  :group 'font-lock-faces)
-(defvar newlisp-font-lock-user-keywords-face 'newlisp-font-lock-user-keywords-face)
-;; ===========================================================================================
-(defface newlisp-font-lock-quote-face
-  '((((class color) (background light)) (:foreground "purple"))
-		;; 2008-03-12 Jeff Ober: changed to plum from magenta. I *hate* magenta.
-    (((class color) (background dark)) (:foreground "plum"))
-    (((class grayscale) (background light)) (:foreground "dimgray" :italic t))
-    (((class grayscale) (background dark)) (:foreground "lightgray" :italic t))
-    (t (:bold t)))
-  "Font lock mode face used to highlight quoted symbols in newlisp mode."
-  :group 'font-lock-faces)
-(defvar newlisp-font-lock-quote-face 'newlisp-font-lock-quote-face)
+
 ;; ==========================================================================
-(defconst 
+(defconst
   newlisp-function-names-regexp
   (regexp-opt '("define" "fn")))
 ;; ==========================================================================
@@ -167,45 +118,45 @@
 (defconst
   newlisp-keywords-regexp
    (regexp-opt '(   ;; c-h f regexp-opt <ret>
-		"!" "!=" "$" "$0" "$1" "$10" "$11" "$12" "$13" "$14" "$15" "$2" "$3" "$4" "$5" "$6" 
-		 "$7" "$8" "$9" "$args" "$idx" "$main-args" "%" "&" "*" "+" "-" "/" ":" "<" "<<" 
-		 "<=" "=" ">" ">=" ">>" "?" "@" "MAIN" "NaN?" "^" "abs" "acos" "acosh" "add" "address" 
-		 "amb" "and" "append" "append-file" "apply" "args" "array" "array-list" "array?" 
-		 "asin" "asinh" "assoc" "assoc-set" "atan" "atan2" "atanh" "atom?" "base64-dec" "base64-enc" 
-		 "bayes-query" "bayes-train" "begin" "beta" "betai" "bind" "binomial" "callback" 
-		 "case" "catch" "ceil" "change-dir" "char" "chop" "clean" "close" "command-line" 
-		 "cond" "cons" "constant" "context" "context?" "copy-file" "cos" "cosh" "count" "cpymem" 
-		 "crc32" "crit-chi2" "crit-z" "current-line" "curry" "date" "date-value" "debug" 
-		 "dec" "def-new" "default" "define" "define-macro" "delete" "delete-file" "delete-url" 
-		 "destroy" "det" "device" "difference" "directory" "directory?" "div" "do-until" 
-		 "do-while" "doargs" "dolist" "dostring" "dotimes" "dotree" "dump" "dup" "empty?" 
-		 "encrypt" "ends-with" "env" "erf" "error-event" "error-number" "error-text" "eval" 
-		 "eval-string" "exec" "exists" "exit" "exp" "expand" "explode" "factor" "fft" "file-info" 
-		 "file?" "filter" "find" "find-all" "first" "flat" "float" "float?" "floor" "flt" 
-		 "for" "for-all" "fork" "format" "fv" "gammai" "gammaln" "gcd" "get-char" "get-float" 
+		"!" "!=" "$" "$0" "$1" "$10" "$11" "$12" "$13" "$14" "$15" "$2" "$3" "$4" "$5" "$6"
+		 "$7" "$8" "$9" "$args" "$idx" "$main-args" "%" "&" "*" "+" "-" "/" ":" "<" "<<"
+		 "<=" "=" ">" ">=" ">>" "?" "@" "MAIN" "NaN?" "^" "abs" "acos" "acosh" "add" "address"
+		 "amb" "and" "append" "append-file" "apply" "args" "array" "array-list" "array?"
+		 "asin" "asinh" "assoc" "assoc-set" "atan" "atan2" "atanh" "atom?" "base64-dec" "base64-enc"
+		 "bayes-query" "bayes-train" "begin" "beta" "betai" "bind" "binomial" "callback"
+		 "case" "catch" "ceil" "change-dir" "char" "chop" "clean" "close" "command-line"
+		 "cond" "cons" "constant" "context" "context?" "copy-file" "cos" "cosh" "count" "cpymem"
+		 "crc32" "crit-chi2" "crit-z" "current-line" "curry" "date" "date-value" "debug"
+		 "dec" "def-new" "default" "define" "define-macro" "delete" "delete-file" "delete-url"
+		 "destroy" "det" "device" "difference" "directory" "directory?" "div" "do-until"
+		 "do-while" "doargs" "dolist" "dostring" "dotimes" "dotree" "dump" "dup" "empty?"
+		 "encrypt" "ends-with" "env" "erf" "error-event" "error-number" "error-text" "eval"
+		 "eval-string" "exec" "exists" "exit" "exp" "expand" "explode" "factor" "fft" "file-info"
+		 "file?" "filter" "find" "find-all" "first" "flat" "float" "float?" "floor" "flt"
+		 "for" "for-all" "fork" "format" "fv" "gammai" "gammaln" "gcd" "get-char" "get-float"
 		 "get-int" "get-long" "get-string" "get-url" "global" "global?"
-                 "if" "if-not" "ifft" "import" 
-		 "inc" "index" "int" "integer" "integer?" "intersect" "invert" "irr" "join" "lambda?" 
-		 "last" "legal?" "length" "let" "letex" "letn" "list" "list?" "load" "local" "log" 
-		 "lookup" "lower-case" "macro?" "main-args" "make-dir" "map" "mat" "match" "max" 
-		 "member" "min" "mod" "mul" "multiply" "name" "net-accept" "net-close" "net-connect" 
-		 "net-error" "net-eval" "net-listen" "net-local" "net-lookup" "net-peek" "net-peer" 
-		 "net-ping" "net-receive" "net-receive-from" "net-receive-udp" "net-select" "net-send" 
-		 "net-send-to" "net-send-udp" "net-service" "net-sessions" "new" "nil" "nil?" "normal" 
-		 "not" "now" "nper" "npv" "nth" "nth-set" "null?" "number?" "open" "or" "ostype" 
-		 "pack" "parse" "parse-date" "peek" "pipe" "pmt" "pop" "pop-assoc" "post-url" "pow" 
-		 "pretty-print" "primitive?" "print" "println" "prob-chi2" "prob-z" "process" "protected?" 
-		 "push" "put-url" "pv" "quote" "quote?" "rand" "random" "randomize" "read-buffer" 
-		 "read-char" "read-file" "read-key" "read-line" "real-path" "ref" "ref-all" "ref-set" 
-		 "regex" "remove-dir" "rename-file" "replace" "replace-assoc" "reset" "rest" "reverse" 
-		 "rotate" "round" "save" "search" "seed" "seek" "select" "semaphore" "sequence" "series" 
-		 "set" "set-assoc" "set-locale" "set-nth" "set-ref" "set-ref-all" "setq" "sgn" "share" 
-		 "signal" "silent" "sin" "sinh" "sleep" "slice" "sort" "source" "sqrt" "starts-with" 
-		 "string" "string?" "sub" "swap" "sym" "symbol?" "symbols" "sys-error" "sys-info" 
-		 "tan" "tanh" "throw" "throw-error" "time" "time-of-day" "timer" "title-case" "trace" 
-		 "trace-highlight" "transpose" "trim" "true" "true?" "unicode" "unify" "unique" "unless" 
-		 "unpack" "until" "upper-case" "utf8" "utf8len" "uuid" "wait-pid" "when" "while" 
-		 "write-buffer" "write-char" "write-file" "write-line" "xml-error" "xml-parse" "xml-type-tags" 
+                 "if" "if-not" "ifft" "import"
+		 "inc" "index" "int" "integer" "integer?" "intersect" "invert" "irr" "join" "lambda?"
+		 "last" "legal?" "length" "let" "letex" "letn" "list" "list?" "load" "local" "log"
+		 "lookup" "lower-case" "macro?" "main-args" "make-dir" "map" "mat" "match" "max"
+		 "member" "min" "mod" "mul" "multiply" "name" "net-accept" "net-close" "net-connect"
+		 "net-error" "net-eval" "net-listen" "net-local" "net-lookup" "net-peek" "net-peer"
+		 "net-ping" "net-receive" "net-receive-from" "net-receive-udp" "net-select" "net-send"
+		 "net-send-to" "net-send-udp" "net-service" "net-sessions" "new" "nil" "nil?" "normal"
+		 "not" "now" "nper" "npv" "nth" "nth-set" "null?" "number?" "open" "or" "ostype"
+		 "pack" "parse" "parse-date" "peek" "pipe" "pmt" "pop" "pop-assoc" "post-url" "pow"
+		 "pretty-print" "primitive?" "print" "println" "prob-chi2" "prob-z" "process" "protected?"
+		 "push" "put-url" "pv" "quote" "quote?" "rand" "random" "randomize" "read-buffer"
+		 "read-char" "read-file" "read-key" "read-line" "real-path" "ref" "ref-all" "ref-set"
+		 "regex" "remove-dir" "rename-file" "replace" "replace-assoc" "reset" "rest" "reverse"
+		 "rotate" "round" "save" "search" "seed" "seek" "select" "semaphore" "sequence" "series"
+		 "set" "set-assoc" "set-locale" "set-nth" "set-ref" "set-ref-all" "setq" "sgn" "share"
+		 "signal" "silent" "sin" "sinh" "sleep" "slice" "sort" "source" "sqrt" "starts-with"
+		 "string" "string?" "sub" "swap" "sym" "symbol?" "symbols" "sys-error" "sys-info"
+		 "tan" "tanh" "throw" "throw-error" "time" "time-of-day" "timer" "title-case" "trace"
+		 "trace-highlight" "transpose" "trim" "true" "true?" "unicode" "unify" "unique" "unless"
+		 "unpack" "until" "upper-case" "utf8" "utf8len" "uuid" "wait-pid" "when" "while"
+		 "write-buffer" "write-char" "write-file" "write-line" "xml-error" "xml-parse" "xml-type-tags"
 		 "zero?" "|" "~"
     )))
 ;; ==========================================================================
@@ -217,7 +168,7 @@
     )))
 ;; ==========================================================================
 (defun newlisp-indent-and-move-next ()
-  "NOTE: Indentation is done via lisp indentation rules. 
+  "NOTE: Indentation is done via lisp indentation rules.
   Not 'default-tab-width."
   (lisp-indent-line)
   (next-line))
@@ -238,8 +189,8 @@
 (defun newlisp-sexp-start ()
   "Move point to nearest opening parens"
   (interactive)
-  (if 
-	(not (eq (char-after) 40)) 
+  (if
+	(not (eq (char-after) 40))
 	(re-search-backward "(")))
 ;; ==========================================================================
 (defun newlisp-sexp-end()
@@ -257,7 +208,7 @@
   (forward-sexp))
 ;; ==========================================================================
 (defun newlisp-select-function ()
-  "Select enclosing function OR 
+  "Select enclosing function OR
 previous function if cursor not inside of a function sexp.
 Cursor moved to end of function."
   (interactive)
@@ -266,7 +217,7 @@ Cursor moved to end of function."
 			  	((newlisp-previous-functionp) (setq found t)))
 		(cond
 			(found
-				(set-mark (point)) 
+				(set-mark (point))
 				(forward-sexp))
 			(t (message "No enclosing or previous function to select")))))
 ;; ==========================================================================
@@ -279,18 +230,18 @@ Cursor moved to end of function."
 			 (setq found t))
 			((newlisp-previous-functionp)
 			 (setq found t)))
-	  (cond (found 
+	  (cond (found
 			  (forward-sexp)
               (newlisp-evaluate-prev-sexp))
-			(t (message 
+			(t (message
 				 "No enclosing or previous function to select for evaluation"))))))
 ;; ==========================================================================
 (defun newlisp-evaluate-buffer()
   "Tells the inferior process to load the current buffer.
    Uses the newlisp 'load command."
   (interactive)
-    (process-send-string 
-	  newlisp-process-name 
+    (process-send-string
+	  newlisp-process-name
 	  (concat "(load \"" (buffer-file-name) "\")\n")))
 ;; ==========================================================================
 ;; CONTRIB: fronter000
@@ -312,9 +263,9 @@ Cursor moved to end of function."
 (defun newlisp-evaluate-region (beg end)
   "Send the current region to the inferior newlisp process, removing newlines."
   (interactive "r")
-  (let ((str 
-          (newlisp-surround-cmds 
-            (buffer-substring-no-properties beg end)))) 
+  (let ((str
+          (newlisp-surround-cmds
+            (buffer-substring-no-properties beg end))))
     (process-send-string
       newlisp-process-name str)))
 ;; ==========================================================================
@@ -325,10 +276,10 @@ Cursor moved to end of function."
   (concat "\n[cmd]\n" str "\n[/cmd]\n"))
 ;; ==========================================================================
 (defun newlisp-evaluate-prev-sexp()
-  "Send the previous sexp to the inferior Scheme process. 
+  "Send the previous sexp to the inferior Scheme process.
    Newlines removed."
   (interactive)
-  (newlisp-evaluate-region 
+  (newlisp-evaluate-region
 	(save-excursion (backward-sexp) (point)) (point)))
 ;; =====================================================================================
 ;;  Top-level Values
@@ -337,8 +288,8 @@ Cursor moved to end of function."
 ;; =====================================================================================
 (defconst newlisp-process-name "newlisp" "Newlisp Process Name")
 ;; =====================================================================================
-(defconst newlisp-function-regexp 
-		  (regexp-opt '("define" "defun" "fn")) 
+(defconst newlisp-function-regexp
+		  (regexp-opt '("define" "defun" "fn"))
 		  "Newlisp function names")
 ;; =====================================================================================
 (defcustom newlisp-doc-buffer  "*newlisp-doc-buffer*"
@@ -358,44 +309,44 @@ uses this for cleanup.")
 ;; ==========================================================================
 (defun newlisp-font-lock-fontify-buffer ()
   "Just a wrapper for font-lock-fontify-buffer. Use liberally to refontify
-multi-line strings. HINT: put cursor outside of string when using." 
+multi-line strings. HINT: put cursor outside of string when using."
   (interactive)
   (font-lock-fontify-buffer))
 ;; ==========================================================================
 (defun newlisp-previous-functionp ()
-  "Look for the preceding function definition. 
-Move there and return t if found. 
+  "Look for the preceding function definition.
+Move there and return t if found.
 Reset to starting point and return nil if not found."
   (interactive)
   (let (res (start (point)))
-	(setq res 
-		  (re-search-backward 
+	(setq res
+		  (re-search-backward
 			newlisp-function-begin-regexp nil 'move))
-	(cond 
+	(cond
 	  (res
-		(if (newlisp-at-function-startp) 
+		(if (newlisp-at-function-startp)
 		  (setq res t)
 		  (goto-char start)
 		  (setq res nil)))
-	  (t 
-		(goto-char start) 
+	  (t
+		(goto-char start)
 		(setq res nil)))
 	res)
   )
 ;; ==========================================================================
 (defun newlisp-next-functionp ()
-  "Look for next function definition. 
-Move there and return t if found. 
+  "Look for next function definition.
+Move there and return t if found.
 Reset to starting point and return nil if not found."
   (interactive)
   (if (eq 40 (char-after)) (forward-char 1))
   (let (res (start (point)))
-	(setq res 
+	(setq res
 		  (re-search-forward newlisp-function-begin-regexp nil 'move))
-	(cond 
+	(cond
 	  (res
 		(re-search-backward "(")
-		(if (newlisp-at-function-startp) 
+		(if (newlisp-at-function-startp)
 		  (setq res t)
 		  (goto-char start)
 		  (setq res nil)))
@@ -414,7 +365,7 @@ Reset to starting point and return nil if not found."
 (defun newlisp-next-function()
   "Moves point backwards to the beginning of the nearest function definition"
   (interactive)
-  (let (res) 
+  (let (res)
 	(setq res (newlisp-next-functionp))
 	(if (not res)
 	  (message "No function found while searching forward."))))
@@ -464,23 +415,23 @@ Reset to starting point and return nil if not found."
   "Start and/or show interpreter in other window.
 Cursor stays at point."
   (interactive)
-  (switch-to-buffer-other-window 
-	(make-comint newlisp-process-name newlisp-binary-name)) 
+  (switch-to-buffer-other-window
+	(make-comint newlisp-process-name newlisp-binary-name))
   (other-window -1))
 ;; ===============================================================================================
 (defun newlisp-visit-interpreter()
   "Start and/or show interpreter in other window.
 Then, put cursor in other window."
   (interactive)
-  (switch-to-buffer-other-window 
+  (switch-to-buffer-other-window
 	(make-comint newlisp-process-name newlisp-binary-name)))
 ;; ==========================================================================
-(defun newlisp-indent-line () 
+(defun newlisp-indent-line ()
   "Set a line to proper lisp-style indentation.
    Sometimes this means that a line may be `out'dented."
    (interactive) (lisp-indent-line))
 ;; ==========================================================================
-(defun newlisp-indent-sexp() 
+(defun newlisp-indent-sexp()
   "Set a sexp to proper lisp-style indentation.
    Sometimes this means that a sexp may be `out'dented."
    (interactive) (indent-sexp))
@@ -491,7 +442,7 @@ Then, put cursor in other window."
   (indent-rigidly beg end 1)
   (exchange-point-and-mark))
 ;; =====================================================================
-(defun newlisp-tab-region (beg end &optional arg)   
+(defun newlisp-tab-region (beg end &optional arg)
   "Indent a region by a tab."
   (interactive "r\nP")
   (indent-rigidly beg end tab-width)
@@ -504,7 +455,7 @@ Then, put cursor in other window."
 	((eq (char-after) 40)   ;; cursor on '('
 	 (kill-sexp 1))
 	((eq (char-after) 41)   ;; cursor on ')'
-	 (forward-char 1) 
+	 (forward-char 1)
 	 (backward-sexp)
 	 (kill-sexp 1))
 	(t (newlisp-sexp-start) ;; find nearest preceding '('
@@ -563,22 +514,21 @@ Then, put cursor in other window."
    `(,@scheme-font-lock-keywords  ;; note: backquote and splice operator!
      ;; add new keywords for highlighting in our sample face
      (,(concat "\\<\\(" newlisp-keywords-regexp "\\)\\>")  ;; builtin keywords + word boundaries
-      0 newlisp-font-lock-keywords-face)  ;; removed 't as last argument
+      0 font-lock-keyword-face)  ;; removed 't as last argument
      (,(concat "\\<\\(" newlisp-user-keywords-regexp "\\)\\>")  ;; user keywords
-      0 newlisp-font-lock-user-keywords-face)
+      0 font-lock-keyword-face)
      (,(concat ":\\(" newlisp-user-keywords-regexp "\\)\\>")  ;; user keywords with ':' prefix
-      0 newlisp-font-lock-user-keywords-face)
+      0 font-lock-keyword-face)
      (,(concat "\\<\\(" newlisp-function-names-regexp "\\)\\>")  ;; function keywords + word boundaries
-      0 newlisp-font-lock-function-names-face t)
+      0 font-lock-function-name-face t)
      ;; Multi-line string highlighting. HINT: use ctrl-c f to refontify
      ;;   NOTE: emacs does not handle multi-line string well in this manner.
      ;;     (JB) suggests looking at how perl and AUCTex handle this.
      ;("[^#]\\({[^{}]*}\\)" 0 'font-lock-string-face) ;; braces, {}
      ("[^#]\\({[^{}]*}\\)" 0 font-lock-string-face t) ; long string
      ("[^#]\\(\\[text\\][^{}]*\\[/text\\]\\)" 0 'font-lock-string-face t) ;; [text] [/text]
-     ("'[A-Za-z0-9\-_*0-9]*" 0 'newlisp-font-lock-quote-face)
-	 ("\\(^\\|[^\$\\\]\\)#.*" 0 'font-lock-comment-face t) ;; ## comments
-	 ("\\(^\\|[^\$\\\]\\);.*" 0 'font-lock-comment-face t) ;; `;;' comments
+     ("\\(^\\|[^\$\\\]\\)#.*" 0 'font-lock-comment-face t) ;; ## comments
+     ("\\(^\\|[^\$\\\]\\);.*" 0 'font-lock-comment-face t) ;; `;;' comments
      )
    "List of newlisp keywords and faces.")
 ;; ==========================================================================
@@ -631,7 +581,7 @@ Then, put cursor in other window."
 ;; ==========================================================================
 (easy-menu-define    ;; c-h f easy-menu-define <RET>
   newlisp-menu newlisp-mode-map "Newlisp Mode Menu"
-  '("Newlisp" 
+  '("Newlisp"
 	["Show Interpreter" newlisp-show-interpreter]
 	["Visit Interpreter" newlisp-visit-interpreter]
 	["Clear Interpreter" newlisp-clear-comint-buffer]
@@ -690,4 +640,6 @@ Then, put cursor in other window."
                         ;; The cons-cell list approach used here is for XEmacs compatibility.
 						(define-key scheme-mode-map [menu-bar scheme] nil)  ;; drop the scheme menu
 						)
+
+(provide 'newlisp)
 ;;; newlisp.el ends here
