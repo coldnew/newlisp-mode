@@ -110,16 +110,6 @@
 (put 'lambda-macro 'scheme-indent-function 1) ;; CONTRIB: Jeff Ober
 
 ;; ===========================================================================================
-(defface newlisp-font-lock-function-names-face
-  '((((class color) (background light)) (:foreground "darkcyan"))
-    (((class color) (background dark)) (:foreground "cyan"))
-    (((class grayscale) (background light)) (:foreground "dimgray" :italic t))
-    (((class grayscale) (background dark)) (:foreground "lightgray" :italic t))
-    (t (:bold t)))
-  "Font lock mode face used to highlight functions (defun, define, fn) for newlisp mode."
-  :group 'font-lock-faces)
-(defvar newlisp-font-lock-function-names-face 'newlisp-font-lock-function-names-face)
-;; ===========================================================================================
 (defface newlisp-font-lock-user-keywords-face
   '((((class color) (background light)) (:foreground "red4"))
     (((class color) (background dark)) (:foreground "dark slate gray")) ;; NEM was yellow3
@@ -551,7 +541,7 @@ Then, put cursor in other window."
      (,(concat ":\\(" newlisp-user-keywords-regexp "\\)\\>")  ;; user keywords with ':' prefix
       0 newlisp-font-lock-user-keywords-face)
      (,(concat "\\<\\(" newlisp-function-names-regexp "\\)\\>")  ;; function keywords + word boundaries
-      0 newlisp-font-lock-function-names-face t)
+      0 font-lock-function-name-face t)
      ;; Multi-line string highlighting. HINT: use ctrl-c f to refontify
      ;;   NOTE: emacs does not handle multi-line string well in this manner.
      ;;     (JB) suggests looking at how perl and AUCTex handle this.
