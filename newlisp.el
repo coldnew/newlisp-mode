@@ -1,4 +1,4 @@
-;;;  newlisp.el --- An Emacs mode for newlisp
+;;; newlisp.el --- An Emacs mode for newlisp
 ;;  this file is not a part of gnu Emacs or Xemacs
 ;;  Author: Tim johnson <tim@johnsons-web.com> (TJ)
 ;;
